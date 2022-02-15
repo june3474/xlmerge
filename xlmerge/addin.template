@@ -1,0 +1,73 @@
+Option Explicit
+
+Private const xlmergePath = "${xlmergePath}"
+
+' VBA7 - Office 2010 and above
+#If VBA7 Then
+    Public Declare PtrSafe Function SetForegroundWindow Lib "user32" (ByVal hWnd As LongPtr) As LongPtr
+#Else
+    Public Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Long
+#End If
+
+Sub xlmerge_header()
+    Shell Chr(34) & xlmergePath & Chr(34) & " header", 1
+End Sub
+
+Sub xlmerge_merge()
+    Dim Sh As Object
+    Set Sh = VBA.CreateObject("WScript.Shell")
+    Dim waitOnReturn As Boolean: waitOnReturn = False
+    Dim windowStyle As Integer: windowStyle = 1
+    ' Different way to run an executable.
+    Sh.Run Chr(34) & xlmergePath & Chr(34) & " merge", windowStyle, waitOnReturn
+End Sub
+
+Sub xlmerge_bank()
+    MsgBox "아직 안 만들었습니다."
+End Sub
+
+Function get_xlmergePath() As String
+    get_xlmergePath = xlmergePath
+End Function
+
+Sub bring_to_front(xl As Application)
+    ' Not used But leave for future reference
+    SetForegroundWindow xl.hWnd
+End Sub
+
+Sub new_excel()
+    ' Not used But leave for future reference
+    Dim xl as Application
+    Set xl = CreateObject("Excel.Application")
+    ' -4167 == xlBATWorksheet
+    ' Maximize window
+    xl.WindowState = -4137
+    xl.Visible = True
+    xl.Workbooks.Add(-4167).Activate
+    xl.ActiveSheet.Name = "Headers"
+
+    bring_to_front xl
+End Sub
+
+Sub put_validation(rangeAddr As String, list As String)
+    ' Put validation on header rows
+    With ActiveWorkbook.Sheets("Headers").range(rangeAddr).Validation
+        .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Formula1:=list
+        .InCellDropdown = True
+        .IgnoreBlank = True
+    End With
+End Sub
+
+Sub insert_button(title As String, cellAddr As String)
+    ' Insert '병합 시작' button at the end of the "Headers" sheet
+    Dim loc As Range
+    Dim btn As Button
+
+    Set loc = ActiveWorkbook.Sheets("Headers").Range(cellAddr)
+    Set btn = ActiveWorkbook.Sheets("Headers").Buttons.Add(loc.Left, loc.Top, loc.Width, loc.Height)
+    With btn
+        .Caption = title
+        .OnAction = "xlmerge.xlmerge_merge"
+        .Name = "btnMerge"
+    End With
+End Sub

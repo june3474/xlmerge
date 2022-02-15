@@ -1,0 +1,16 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui"> 
+  <ribbon startFromScratch="False"> 
+    <tabs> 
+      <tab id="dks:tab" label="추가 도구"> 
+        <group id="dks:group_merge" label="병합"> 
+          <button id="dks:merge_general" imageMso="AddWebPartConnection" size="large" 
+            label="일반" 
+            onAction="xlmerge_header" />
+          <button id="dks:merge_bank" imageMso="SyncAll" size="large" 
+            label="은행" 
+            onAction="xlmerge_bank" />
+        </group> 
+      </tab> 
+    </tabs> 
+  </ribbon> 
+</customUI>
