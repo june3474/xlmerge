@@ -1,16 +1,16 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
-python_dir = 'C:\\Development\\Anaconda3.9\\envs\\python3.9\\'
+
+import sys
+import os
 
 # exclude Tk, Tcl completely
-import sys
 sys.modules['FixTk'] = None
+source_path = os.path.join(os.path.abspath(SPECPATH), 'xlmerge')
 
 xlmerge_a = Analysis(['xlmerge\\xlmerge.py'],
-                     pathex=['C:\\Users\\dks\\Programming\\python\\xlmerge\\xlmerge',
-                             python_dir + 'Library\\bin',
-                             python_dir + 'Lib\\site-packages\\PyQt5\\Qt5\\bin'],
+                     pathex=[source_path],
                      binaries=[],
                      datas=[],
                      hiddenimports=[],
@@ -37,9 +37,7 @@ xlmerge_exe = EXE(xlmerge_pyz,
                   console=False )
 
 addin_a = Analysis(['xlmerge\\addin.py'],
-                   pathex=['C:\\Users\\dks\\Programming\\python\\xlmerge',
-                           python_dir + 'Library\\bin',
-                           python_dir + 'Lib\\site-packages\\PyQt5\\Qt5\\bin'],
+                   pathex=[os.path.abspath(SPECPATH), 'xlmerge'],
                    binaries=[],
                    datas=[('xlmerge\\addin.template', '.'),
                           ('xlmerge\\Excel.officeUI', '.')],
