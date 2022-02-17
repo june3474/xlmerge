@@ -71,7 +71,7 @@ Section "Main" main_sec
 	SetOutPath $INSTDIR
 	File /r "dist\${PRODUCT_NAME}\*"
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
-    # Uninstall registry keys
+    # Uninstall registry keys. But let's not pollute registry
     ;WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayName" "${PRODUCT_NAME}"
     ;WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
 SectionEnd

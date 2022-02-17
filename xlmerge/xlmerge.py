@@ -240,7 +240,7 @@ class HeaderSelector(QDialog):
         # Put validation
         macro = self.header_sheet.book.macro('put_validation')
         where = 'D' + last_row + ':' + xl_col_to_name(3+len(header)-1) + last_row
-        macro(where, ','.join(header))
+        macro(where, ','.join(map(str, header)))
 
         self.header_sheet.autofit('c')  # columns only
 
@@ -375,7 +375,8 @@ class Merger:
             self.write_point.increase_col()
             for item in header:
                 # if item is empty, do nothing and proceed to the next item
-                if item:
+                # But a header column might be number 0
+                if not (item is None or item == ""):
                     # locate col's index in the source excel file
                     col = source_header.index(item) + 1
                     data = self.read_cols(ws, header_row, col)
@@ -389,8 +390,10 @@ class Merger:
             self.write_cols(data, (self.write_point.row, 1))
             wb.close()
 
-            header_row = str(self.write_point.row)
-            self.merge_sheet.range(header_row + ':' + header_row).color = '#ffff00'
+            header_row_range = '{0}:{0}'.format(str(self.write_point.row))
+            self.merge_sheet.range(header_row_range).color = '#ffff00'
+            # Align center, -4108 = xlHAlignCenter
+            self.excel.api.ActiveSheet.Range(header_row_range).HorizontalAlignment = -4108
             self.write_point.set(self.write_point.row + len(data), 1)
 
         self.merge_sheet.autofit('c')
