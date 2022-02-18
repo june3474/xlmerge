@@ -79,7 +79,7 @@ ctrl 키와 shift 키를 이용하여 여러 개의 파일을 선택할 수 있�
 데이터가 많으면 당연히 시간이 좀 걸립니다.
 
 ** 삭제
-xlmerge 설치 폴더 내에 있는 uninstall.exe를 실행하십시오.
+먼저 엑셀의 보안 설정을 원상 복구하신 후에 xlmerge 설치 폴더 내에 있는 uninstall.exe를 실행하십시오.
  
 ** Change Log
 - [version 1.0] Initial version
